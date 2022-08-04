@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    protected ArrayList<Integer> subTaskIdArray;
+    private ArrayList<Integer> subTaskIdArray;
 
-    public Epic(int id, String name, String description, String status) {
+    public Epic(int id, String name, String description, Status status) {
         super(id, name, description, status);
         subTaskIdArray = new ArrayList<>();
     }
@@ -16,14 +16,14 @@ public class Epic extends Task {
         this.subTaskIdArray = subTaskIdArray;
     }
 
+    public  void addSubTaskId (int subTaskId) {
+        this.subTaskIdArray.add(subTaskId);
+    }
+
     @Override
     public String toString() {
         return "Epic{" +
                 "subTaskIdArray=" + subTaskIdArray +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
                 '}';
     }
 }
