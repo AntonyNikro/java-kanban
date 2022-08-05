@@ -1,3 +1,10 @@
+package practicum.manager;
+
+import practicum.models.Epic;
+import practicum.models.Status;
+import practicum.models.SubTask;
+import practicum.models.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,28 +14,16 @@ public class TaskManager {
     private HashMap<Integer, SubTask> subTaskHash = new HashMap<>();
     private HashMap<Integer, Epic> epicHash = new HashMap<>();
 
-    public HashMap<Integer, Task> getTaskHash() {
-        return taskHash;
+    public ArrayList<Task> getTasks() {
+      return new ArrayList<>(taskHash.values());
     }
 
-    public void setTaskHash(HashMap<Integer, Task> taskHash) {
-        this.taskHash = taskHash;
+    public ArrayList<Task> getSubTasks() {
+        return new ArrayList<>(subTaskHash.values());
     }
 
-    public HashMap<Integer, SubTask> getSubTaskHash() {
-        return subTaskHash;
-    }
-
-    public void setSubTaskHash(HashMap<Integer, SubTask> subTaskHash) {
-        this.subTaskHash = subTaskHash;
-    }
-
-    public HashMap<Integer, Epic> getEpicHash() {
-        return epicHash;
-    }
-
-    public void setEpicHash(HashMap<Integer, Epic> epicHash) {
-        this.epicHash = epicHash;
+    public ArrayList<Task> getEpic() {
+        return new ArrayList<>(epicHash.values());
     }
 
 
@@ -48,9 +43,10 @@ public class TaskManager {
         taskHash.clear();
     }
 
-    public void deleteSubTasks(Epic epic) {
-        subTaskHash.clear();
-        updateEpicStatus(epic);
+    public void deleteSubTasks() {
+        for (var id : subTaskHash.keySet()) {
+            this.removeSubTaskId(id);
+        }
     }
 
     public void deleteEpics() {
@@ -139,15 +135,15 @@ public class TaskManager {
 
     public void removeSubTaskId(int id) {
         int epicId = subTaskHash.get(id).getEpicId();
-        SubTask subTask = subTaskHash.get(id);
-        Epic epic = getEpicId(subTask.getEpicId());
-        subTaskHash.remove(id);
+        SubTask subTask = subTaskHash.get(id); // оставил эту строку так как не сослаться на epic в 141 и 143 строках
+        Epic epic = getEpicId(subTask.getEpicId()); // оставил эту строку так как не сослаться на epic в 141 и 143 строках
         if (subTaskHash.containsKey(id)) {
             if (epicHash.containsKey(epic.getId())) {
                 epicHash.get(epicId).getSubTaskIdArray().remove(id);
                 updateEpicStatus(epic);
             }
         }
+        subTaskHash.remove(id);
     }
 
     public void removeEpicId(int id) {

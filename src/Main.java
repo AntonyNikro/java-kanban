@@ -1,3 +1,9 @@
+import practicum.manager.TaskManager;
+import practicum.models.Epic;
+import practicum.models.Status;
+import practicum.models.SubTask;
+import practicum.models.Task;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -10,7 +16,7 @@ public class Main {
         Task task2 = new Task(0, "2 Название задачи 2", "2 Описание задачи 2", Status.NEW);
         taskManager.addTask(task1);
         taskManager.addTask(task2);
-        System.out.println(taskManager.getTaskHash());
+        System.out.println(taskManager.getTasks());
 
         System.out.println("Создание эпика с 2 подзадачами");
 
@@ -22,8 +28,8 @@ public class Main {
         SubTask subTask2 = new SubTask(0, "2 Название подзадачи 2", "2 Описание подзадачи 2",
                 Status.NEW, epic1.getId());
         taskManager.addSubTask(subTask2);
-        System.out.println(taskManager.getEpicHash());
-        System.out.println(taskManager.getSubTaskHash());
+        System.out.println(taskManager.getEpic());
+        System.out.println(taskManager.getSubTasks());
 
         System.out.println("Создание эпика с 2 подзадачами");
 
@@ -32,8 +38,8 @@ public class Main {
         SubTask subTask3 = new SubTask(1, "1 Название подзадачи 1", "1 Описание подзадачи 1",
                 Status.NEW, epic2.getId());
         taskManager.addSubTask(subTask3);
-        System.out.println(taskManager.getEpicHash());
-        System.out.println(taskManager.getSubTaskHash());
+        System.out.println(taskManager.getEpic());
+        System.out.println(taskManager.getSubTasks());
         System.out.println(taskManager.getTaskId(1));
 
         System.out.println("Обновление задачи");
@@ -42,15 +48,15 @@ public class Main {
         taskUpdate.setId(1);
         taskManager.updateTask(taskUpdate);
         taskManager.updateTask(new Task(2, "Обновили название задачи 2", "Обновили описание задачи 2", Status.DONE));
-        System.out.println("Список обновленных задач: " + taskManager.getTaskHash());
+        System.out.println("Список обновленных задач: " + taskManager.getTasks());
 
         System.out.println("Обновление подзадачи");
 
         taskManager.updateSubTask(new SubTask(3, "Обновили название подзадачи 1 эпик 1", "Обновили описание подзадачи 1", Status.IN_PROGRESS, epic1.getId()));
         taskManager.updateSubTask(new SubTask(4, "Обновили название подзадачи 2 эпик 1", "Обновили описание подзадачи 1", Status.DONE, epic1.getId()));
         taskManager.updateSubTask(new SubTask(5, "Обновили название подзадачи 1 эпик 2", "Обновили описание подзадачи 1", Status.DONE, epic2.getId()));
-        System.out.println(taskManager.getEpicHash());
-        System.out.println(taskManager.getSubTaskHash());
+        System.out.println(taskManager.getEpic());
+        System.out.println(taskManager.getSubTasks());
 
         System.out.println("Получение списка всех подзадач определённого эпика: " + taskManager.epicSubTaskIds(epic2.getId()));
 

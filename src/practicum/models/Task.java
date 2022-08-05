@@ -1,3 +1,4 @@
+package practicum.models;
 
 public class Task {
     private int id;
@@ -6,7 +7,7 @@ public class Task {
 
     //private String status; // NEW, IN_PROGRESS, DONE
 
-    Status status;
+   private Status status;
 
     public Task(int id, String name, String description, Status status) {
         this.id = id;
@@ -50,7 +51,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "practicum.models.Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
