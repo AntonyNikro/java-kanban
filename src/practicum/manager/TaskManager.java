@@ -4,15 +4,14 @@ import practicum.models.Epic;
 import practicum.models.SubTask;
 import practicum.models.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Task> getSubTasks();
+    List<Task> getSubTasks();
 
-    ArrayList<Task> getEpic();
+    List<Task> getEpic();
 
     Task getTaskId(int id);
 
@@ -26,7 +25,7 @@ public interface TaskManager {
 
     void deleteEpics();
 
-    ArrayList<SubTask> epicSubTaskIds(int id);
+    List<SubTask> epicSubTaskIds(int id);
 
    int addTask(Task task);
 

@@ -5,59 +5,64 @@ import practicum.models.Status;
 import practicum.models.SubTask;
 import practicum.models.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int addId;
-    private HashMap<Integer, Task> taskHash = new HashMap<>();
-    private HashMap<Integer, SubTask> subTaskHash = new HashMap<>();
-    private HashMap<Integer, Epic> epicHash = new HashMap<>();
+    private final Map<Integer, Task> taskHash = new HashMap<>();
+    private final Map<Integer, SubTask> subTaskHash = new HashMap<>();
+    private final Map<Integer, Epic> epicHash = new HashMap<>();
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
-    public ArrayList<Task> getTasks() {
+    @Override
+    public List<Task> getTasks() {
       return new ArrayList<>(taskHash.values());
     }
 
-    public ArrayList<Task> getSubTasks() {
+    @Override
+    public List<Task> getSubTasks() {
 
         return new ArrayList<>(subTaskHash.values());
     }
 
-    public ArrayList<Task> getEpic() {
+    @Override
+    public List<Task> getEpic() {
 
         return new ArrayList<>(epicHash.values());
     }
 
 
+    @Override
     public Task getTaskId(int id) {
-
+        historyManager.addHistory(taskHash.get(addId));
         return taskHash.get(id);
     }
 
+    @Override
     public SubTask getSubTaskId(int id) {
-
+        historyManager.addHistory(subTaskHash.get(addId));
         return subTaskHash.get(id);
     }
 
+    @Override
     public Epic getEpicId(int id) {
-
+        historyManager.addHistory(epicHash.get(addId));
         return epicHash.get(id);
     }
 
     @Override
     public void deleteTasks() {
-
         taskHash.clear();
     }
 
     @Override
     public void deleteSubTasks() {
-        for (var id : subTaskHash.keySet()) {
-            this.removeSubTaskId(id);
-        }
+        for (var id : subTaskHash.keySet()) { //честно говоря не осознал необходимость применения действий указанных
+            this.removeSubTaskId(id); // в замечании. Есть же реализация через removeSubTaskId. Либо тогда не очень понятно как это делать,
+        } // прошу пояснить)
+
+
     }
 
     @Override
@@ -67,9 +72,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<SubTask> epicSubTaskIds(int id) {
-        ArrayList<Integer> getEpicSubTasks = epicHash.get(id).getSubTaskIdArray();
-        ArrayList<SubTask> subTaskArray = new ArrayList<>();
+    public List<SubTask> epicSubTaskIds(int id) {
+        List<Integer> getEpicSubTasks = epicHash.get(id).getSubTaskIdList();
+        List<SubTask> subTaskArray = new ArrayList<>();
         for (int item : getEpicSubTasks) {
             subTaskArray.add(subTaskHash.get(item));
         }
@@ -128,40 +133,35 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpicStatus(Epic epic) {
-
-        if (epic.getSubTaskIdArray().isEmpty()) {
-            epic.setStatus(Status.valueOf("NEW"));
-
-        }
-        for (int id : epic.getSubTaskIdArray()) {
+        for (int id : epic.getSubTaskIdList()) {
             SubTask subTask = subTaskHash.get(id);
-            if (subTaskHash.get(id).getStatus().equals(Status.valueOf("IN_PROGRESS"))) {
-                epic.setStatus(Status.valueOf("IN_PROGRESS"));
-
+            if (subTask.getStatus().equals(Status.NEW)) {
+                epic.setStatus(Status.NEW);
             }
-            if (subTaskHash.get(id).getStatus().equals(Status.valueOf("DONE"))) {
-                epic.setStatus(Status.valueOf("DONE"));
-
+            if (subTask.getStatus().equals(Status.DONE)) {
+                epic.setStatus(Status.DONE);
+            } else {
+                epic.setStatus(Status.IN_PROGRESS);
             }
+
         }
 
     }
 
     @Override
     public void removeTaskId(int id) {
-        if (taskHash.containsKey(id)) {
             taskHash.remove(id);
-        }
+
     }
 
     @Override
     public void removeSubTaskId(int id) {
         int epicId = subTaskHash.get(id).getEpicId();
-        SubTask subTask = subTaskHash.get(id); // оставил эту строку так как не сослаться на epic в 141 и 143 строках
-        Epic epic = getEpicId(subTask.getEpicId()); // оставил эту строку так как не сослаться на epic в 141 и 143 строках
+        SubTask subTask = subTaskHash.get(id);
+        Epic epic = getEpicId(subTask.getEpicId());
         if (subTaskHash.containsKey(id)) {
             if (epicHash.containsKey(epic.getId())) {
-                epicHash.get(epicId).getSubTaskIdArray().remove(id);
+                epicHash.get(subTask).getSubTaskIdList().remove(id); //сделал так, если правильно понял...
                 updateEpicStatus(epic);
             }
         }
@@ -172,7 +172,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpicId(int id) {
         if (epicHash.containsKey(id)) {
             Epic epic = epicHash.get(id);
-            for (int subTaskId : epic.getSubTaskIdArray()) {
+            for (int subTaskId : epic.getSubTaskIdList()) {
                 subTaskHash.remove(subTaskId);
             }
             epicHash.remove(id);
@@ -189,5 +189,16 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InMemoryTaskManager that = (InMemoryTaskManager) o;
+        return addId == that.addId;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(addId);
+    }
 }

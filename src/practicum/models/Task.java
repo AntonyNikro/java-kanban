@@ -5,8 +5,6 @@ public class Task {
     private String name;
     private String description;
 
-    //private String status; // NEW, IN_PROGRESS, DONE
-
    private Status status;
 
     public Task(int id, String name, String description, Status status) {

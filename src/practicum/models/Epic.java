@@ -1,31 +1,32 @@
 package practicum.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subTaskIdArray;
+    private List<Integer> subTaskIdList;
 
     public Epic(int id, String name, String description, Status status) {
-        super(id, name, description, status);
-        subTaskIdArray = new ArrayList<>();
+        super(id, name, description, Status.NEW);
+        subTaskIdList = new ArrayList<>();
     }
 
-    public ArrayList<Integer> getSubTaskIdArray() {
-        return subTaskIdArray;
+    public List<Integer> getSubTaskIdList() {
+        return subTaskIdList;
     }
 
-    public void setSubTaskIdArray(ArrayList<Integer> subTaskIdArray) {
-        this.subTaskIdArray = subTaskIdArray;
+    public void setSubTaskIdList(List<Integer> subTaskIdList) {
+        this.subTaskIdList = subTaskIdList;
     }
 
     public  void addSubTaskId (int subTaskId) {
-        this.subTaskIdArray.add(subTaskId);
+        this.subTaskIdList.add(subTaskId);
     }
 
     @Override
     public String toString() {
         return "practicum.models.Epic{" +
-                "subTaskIdArray=" + subTaskIdArray +
+                "subTaskIdArray=" + subTaskIdList +
                 '}';
     }
 }

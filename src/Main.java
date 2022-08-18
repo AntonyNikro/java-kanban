@@ -10,21 +10,21 @@ public class Main {
 
 
         TaskManager inMemoryTaskManager = Managers.getDefaultTask();
-        HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+
 
         Task task1 = new Task(0, "1 Название задачи 1", "1 Описание задачи 1", Status.NEW);
         Task task2 = new Task(0, "2 Название задачи 2", "2 Описание задачи 2", Status.NEW);
         inMemoryTaskManager.addTask(task1);
-        inMemoryHistoryManager.addHistory(task1);
+        inMemoryTaskManager.getHistoryManager().addHistory(task1);
         inMemoryTaskManager.addTask(task2);
-        inMemoryHistoryManager.addHistory(task2);
+        inMemoryTaskManager.getHistoryManager().addHistory(task1);
 
         System.out.println("История:");
         inMemoryTaskManager.getTaskId(1);
         inMemoryTaskManager.getTaskId(2);
 
 
-        for (Task task : inMemoryHistoryManager.getHistory()) {
+        for (Task task : inMemoryTaskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
 
