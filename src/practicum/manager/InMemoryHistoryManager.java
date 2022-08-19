@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static int SIZE = 10;
+    private final static int SIZE = 10;
 
     private final List<Task> history = new ArrayList<>();
 
@@ -22,6 +22,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public List<Task> getHistory() {
 
-        return history; // не совсем понятно что требуется, такие методы не проходили. Прошу пояснить)
+        return List.copyOf(history);
     }
+
+
 }
