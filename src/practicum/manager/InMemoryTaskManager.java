@@ -182,7 +182,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = getEpicId(subTask.getEpicId());
         if (subTaskHash.containsKey(id)) {
             if (epic != null) {
-                epic.getSubTaskIdList().remove(id);
+                epic.getSubTaskIdList().remove((Integer) id);
                 updateEpicStatus(epic);
             }
         }
@@ -221,5 +221,16 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int hashCode() {
         return Objects.hash(addId);
+    }
+
+    @Override
+    public String toString() {
+        return "InMemoryTaskManager{" +
+                "addId=" + addId +
+                ", taskHash=" + taskHash +
+                ", subTaskHash=" + subTaskHash +
+                ", epicHash=" + epicHash +
+                ", historyManager=" + historyManager +
+                '}';
     }
 }
