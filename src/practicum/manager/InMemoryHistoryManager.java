@@ -16,10 +16,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     class CustomLinkedList<T> {
         private Node<T> head;
-        Node<T> tail;
+        private Node<T> tail;
 
         public void linkLast(T t) {
-            if (head == null) {
+            /*if (head == null) {
                 Node<T> currentNode = new Node<>(t, null, tail);
                 head = currentNode;
                 tail = new Node<>(null, currentNode, null);
@@ -29,7 +29,15 @@ public class InMemoryHistoryManager implements HistoryManager {
             currentNode.value = t;
             tail = new Node<>(null, currentNode, null);
             currentNode.prev.next = currentNode;
-            currentNode.next = tail;
+            currentNode.next = tail;*/
+
+            Node node = new Node<>(t, tail, null); //не совсем понял подход, но реализовал как показывал в вебинаре Андрей Смалий (буду благодарен за пояснения))
+            if (head == null) {
+                head = node;
+            } else {
+                tail.next = node;
+            }
+            tail = node;
         }
 
         public List<T> getTasks() {
@@ -37,7 +45,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             Node<T> current = head;
 
             while (current != null) {
-                tasks.add(current.value);
+                tasks.add(current.getValue());
                 current = current.next;
             }
             return tasks;
@@ -48,6 +56,8 @@ public class InMemoryHistoryManager implements HistoryManager {
                 head = node.next;
                 if (node.next != null) {
                     node.next.prev = null;
+                } else {
+                    tail = null;
                 }
             } else {
                 node.prev.next = node.next;

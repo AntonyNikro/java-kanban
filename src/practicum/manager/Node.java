@@ -1,7 +1,7 @@
 package practicum.manager;
 
 public class Node<T> {
-    T value;
+   private T value;
     Node<T> prev;
     Node<T> next;
 
@@ -9,5 +9,10 @@ public class Node<T> {
         this.value = value;
         this.prev = prev;
         this.next = next;
+
+    }
+
+    public T getValue() {
+        return value;
     }
 }
