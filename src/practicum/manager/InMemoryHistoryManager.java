@@ -19,23 +19,12 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node<T> tail;
 
         public void linkLast(T t) {
-            /*if (head == null) {
-                Node<T> currentNode = new Node<>(t, null, tail);
-                head = currentNode;
-                tail = new Node<>(null, currentNode, null);
-                return;
-            }
-            Node<T> currentNode = tail;
-            currentNode.value = t;
-            tail = new Node<>(null, currentNode, null);
-            currentNode.prev.next = currentNode;
-            currentNode.next = tail;*/
 
             Node node = new Node<>(t, tail, null); //не совсем понял подход, но реализовал как показывал в вебинаре Андрей Смалий (буду благодарен за пояснения))
             if (head == null) {
                 head = node;
             } else {
-                tail.next = node;
+                tail.setNext(node);
             }
             tail = node;
         }
@@ -45,24 +34,26 @@ public class InMemoryHistoryManager implements HistoryManager {
             Node<T> current = head;
 
             while (current != null) {
-                tasks.add(current.getValue());
-                current = current.next;
+                if (current.getValue() != null) {
+                    tasks.add(current.getValue());
+                }
+                current = current.getNext();
             }
             return tasks;
         }
 
         public void removeNode(Node<T> node) {
             if (node.equals(head)) {
-                head = node.next;
-                if (node.next != null) {
-                    node.next.prev = null;
+                head = node.getNext();
+                if (node.getNext() != null) {
+                    node.getNext().setPrev(null);
                 } else {
                     tail = null;
                 }
             } else {
-                node.prev.next = node.next;
-                if (node.next != null) {
-                    node.next.prev = node.prev;
+                node.getPrev().setNext(node.getNext());
+                if (node.getNext() != null) {
+                    node.getNext().setPrev(node.getPrev());
 
                 }
             }
@@ -73,7 +64,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void addHistory(Task task) {
         remove(task);
         historyList.linkLast(task);
-        history.put(task.getId(), historyList.tail.prev);
+        history.put(task.getId(), historyList.tail.getPrev());
     }
 
     @Override
