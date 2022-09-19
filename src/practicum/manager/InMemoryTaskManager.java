@@ -105,6 +105,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTask.setId(addId++);
         subTaskHash.put(subTask.getId(), subTask);
         epic.addSubTaskId(subTask.getId());
+        //epic.getSubTaskIdList().add(subTask.getId());
         updateEpicStatus(epic);
         return subTask.getId();
     }
@@ -153,9 +154,9 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (int id : epic.getSubTaskIdList()) {
             SubTask subTask = subTaskHash.get(id);
-            if (subTask.getStatus().equals(Status.NEW)) {
+            if (subTask.getStatus() == Status.NEW) {
                 newStatus += 1;
-            } else if (subTask.getStatus().equals(Status.DONE)) {
+            } else if (subTask.getStatus() == Status.DONE) {
                 doneStatus += 1;
             }
         }

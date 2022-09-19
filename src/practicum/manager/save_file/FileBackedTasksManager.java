@@ -29,15 +29,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fileBackedTasksManager.addTask(task2);
         Epic epic1 = new Epic("Эпик 1", "Описание эпика 1", TaskType.EPIC);
         fileBackedTasksManager.addEpic(epic1);
-        SubTask subtask1 = new SubTask("Подзадача 1", "Описание подзадачи 1",1, TaskType.SUBTASK);
+        SubTask subtask1 = new SubTask("Подзадача 1", "Описание подзадачи 1",epic1.getId(), TaskType.SUBTASK);
         fileBackedTasksManager.addSubTask(subtask1);
-        SubTask subtask2 = new SubTask("Подзадача 2", "Описание подзадачи 2",1, TaskType.SUBTASK);
+        SubTask subtask2 = new SubTask("Подзадача 2", "Описание подзадачи 2",epic1.getId(), TaskType.SUBTASK);
         fileBackedTasksManager.addSubTask(subtask2);
 
-        /*fileBackedTasksManager.getTaskId(task2.getId());
         fileBackedTasksManager.getTaskId(task1.getId());
+        fileBackedTasksManager.getTaskId(task2.getId());
         fileBackedTasksManager.getEpicId(epic1.getId());
-        System.out.println();*/
+        fileBackedTasksManager.getSubTaskId(subtask1.getId());
+        fileBackedTasksManager.getSubTaskId(subtask2.getId());
+        System.out.println();
     }
 
     public static FileBackedTasksManager loadFromFile(File file) throws FileNotFoundException {
