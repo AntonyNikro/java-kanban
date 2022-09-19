@@ -1,10 +1,17 @@
 package practicum.models;
 
+import practicum.manager.save_file.TaskType;
+
 public class SubTask extends Task {
     private int epicId;
 
-    public SubTask(int id, String name, String description, Status status, int epicId) {
-        super(id, name, description, status);
+    public SubTask(int id, String name, String description, TaskType taskType, Status status, int epicId) {
+        super(id, name, description, taskType, status);
+        this.epicId = epicId;
+    }
+
+    public SubTask(String name, String description, int idEpic, TaskType taskType) {
+        super(name, description, taskType);
         this.epicId = epicId;
     }
 

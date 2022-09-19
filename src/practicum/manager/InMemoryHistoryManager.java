@@ -20,7 +20,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         public void linkLast(T t) {
 
-            Node node = new Node<>(t, tail, null); //не совсем понял подход, но реализовал как показывал в вебинаре Андрей Смалий (буду благодарен за пояснения))
+            Node node = new Node<>(t, tail, null);
             if (head == null) {
                 head = node;
             } else {

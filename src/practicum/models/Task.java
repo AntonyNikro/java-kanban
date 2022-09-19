@@ -1,19 +1,36 @@
 package practicum.models;
 
+import practicum.manager.save_file.TaskType;
+
 public class Task {
     private int id;
     private String name;
     private String description;
 
+    private TaskType taskType;
+
     private Status status;
 
-    public Task(int id, String name, String description, Status status) {
+    public Task(int id, String name, String description, TaskType taskType, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.taskType = taskType;
         this.status = status;
     }
 
+    public Task(String name, String description, TaskType taskType, Status status) {
+        this.name = name;
+        this.description = description;
+        this.taskType = taskType;
+        this.status = status;
+    }
+
+    public Task(String name, String description, TaskType taskType) {
+        this.name = name;
+        this.description = description;
+        this.taskType = taskType;
+    }
 
     public int getId() {
         return id;

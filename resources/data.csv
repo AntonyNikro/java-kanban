@@ -1,0 +1,4 @@
+id,type,name,status,description,epicpracticum.models.Task{id=0, name='Задача 1', description='Описание задачи 1', status=NEW}
+practicum.models.Task{id=1, name='Задача 2', description='Описание задачи 2', status=NEW}
+practicum.models.Epic{subTaskIdArray=null}
+
