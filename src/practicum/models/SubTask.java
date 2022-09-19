@@ -10,7 +10,7 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    public SubTask(String name, String description, int idEpic, TaskType taskType) {
+    public SubTask(String name, String description, int epicId, TaskType taskType) {
         super(name, description, taskType);
         this.epicId = epicId;
     }
