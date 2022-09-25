@@ -32,6 +32,11 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epicHash.values());
     }
 
+    @Override
+    public void updateAddId(int id) {
+        this.addId = Math.max(this.addId, id);
+    }
+
 
     @Override
     public Task getTaskId(int id) {

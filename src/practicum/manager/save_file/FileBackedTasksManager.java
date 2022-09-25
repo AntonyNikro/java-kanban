@@ -1,9 +1,6 @@
 package practicum.manager.save_file;
 
-import practicum.manager.HistoryManager;
-import practicum.manager.InMemoryTaskManager;
-import practicum.manager.ManagerSaveException;
-import practicum.manager.Managers;
+import practicum.manager.*;
 import practicum.models.Epic;
 import practicum.models.Status;
 import practicum.models.SubTask;
@@ -35,7 +32,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 String line = lines[i];
                 if (line.isEmpty()) {
                     line = lines[i + 1];
-                    history = TaskManagerCSVFormatter.historyFromString(line); //если правильно понял то исправил, хотя сам сомневаюсь)
+                    history = TaskManagerCSVFormatter.historyFromString(line);
                     break;
                 }
                 String[] type = line.split(",");
@@ -44,25 +41,28 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     case "TASK" :
                         Task task = TaskManagerCSVFormatter.taskFromString(lines[i]);
                         tasksManager.taskHash.put(task.getId(), task);
+                        tasksManager.updateAddId(task.getId());
                         break;
                     case "EPIC" :
                         Epic epic = TaskManagerCSVFormatter.epicFromString(lines[i]);
                         tasksManager.epicHash.put(epic.getId(), epic);
+                        tasksManager.updateAddId(epic.getId());
                         break;
                     case "SUBTASK" :
                         SubTask subtask = TaskManagerCSVFormatter.subtaskFromString(lines[i]);
                         tasksManager.subTaskHash.put(subtask.getId(), subtask);
+                        tasksManager.updateAddId(subtask.getId());
                         break;
                 }
             }
         } catch(IOException e) {
             throw new FileNotFoundException("Файл не прочитан");
         }
-        return tasksManager;// тяжело изначально мне этот метод дался, подправил, но если не правильно буду весь заново переписывать
+        return tasksManager;
     }
 
     public void save() {
-        File file = new File ("resources\\data.csv"); // поясни пожалуйста что имелось ввиду про прямой слэш?
+        File file = new File ("resources/data.csv");
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(TaskManagerCSVFormatter.getHeader());
@@ -90,7 +90,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public SubTask getSubTaskId(int id) { // это замечание как я понял касается всех методов get
+    public SubTask getSubTaskId(int id) {
         SubTask subtask = super.getSubTaskId(id);
         return subtask;
     }
@@ -98,10 +98,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public Epic getEpicId(int id) {
         Epic epic = super.getEpicId(id);
-        try {
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
         return epic;
     }
 

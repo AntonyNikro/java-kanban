@@ -19,6 +19,8 @@ public interface TaskManager {
 
     Epic getEpicId(int id);
 
+    void updateAddId(int id);
+
     void deleteTasks();
 
     void deleteSubTasks();
