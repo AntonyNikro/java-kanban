@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    private File file;
+    private static File file;
     public FileBackedTasksManager (File file) {
         this.file = file;
     }
@@ -62,7 +62,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void save() {
-        File file = new File ("resources/data.csv");
+        
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(TaskManagerCSVFormatter.getHeader());
@@ -81,24 +81,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         } catch(IOException e) {
             throw new ManagerSaveException("Ошибка. Файл не сохранен");
         }
-    }
-
-    @Override
-    public Task getTaskId(int id) {
-        Task task = super.getTaskId(id);
-        return task;
-    }
-
-    @Override
-    public SubTask getSubTaskId(int id) {
-        SubTask subtask = super.getSubTaskId(id);
-        return subtask;
-    }
-
-    @Override
-    public Epic getEpicId(int id) {
-        Epic epic = super.getEpicId(id);
-        return epic;
     }
 
     @Override
@@ -237,7 +219,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File("resources\\data.csv"));
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File(String.valueOf(file)));
         Task task1 = new Task("Задача 1","Описание задачи 1", TaskType.TASK, Status.NEW);
         fileBackedTasksManager.addTask(task1);
         Task task2 = new Task("Задача 2", "Описание задачи 2", TaskType.TASK, Status.NEW);
@@ -254,6 +236,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fileBackedTasksManager.getEpicId(epic1.getId());
         fileBackedTasksManager.getSubTaskId(subtask1.getId());
         fileBackedTasksManager.getSubTaskId(subtask2.getId());
-        System.out.println();
+        System.out.println(fileBackedTasksManager.getTasks());
+        System.out.println(fileBackedTasksManager.getSubTasks());
+        System.out.println(fileBackedTasksManager.getEpic());
     }
 }
